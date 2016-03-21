@@ -3,9 +3,9 @@
 A simple telegram-bot wtitten in LUA 
 
 # commands
-`/ban' 
+`/ban`
  حظر عضو من ارسال رساله بالرد على رسالته
-`/unban'
+`/unban`
 فتح الحظر عن عضو عن طريق الرد على رسالته
 `/users` 
 معرفه عدد الاعضاء المشتركين
