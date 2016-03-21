@@ -3,23 +3,23 @@
 A simple telegram-bot wtitten in LUA 
 
 # commands
-`/ban`
+`/bb`
 
  حظر عضو من ارسال رساله بالرد على رسالته
 
-`/unban`
+`/uu`
 
 فتح الحظر عن عضو عن طريق الرد على رسالته
 
-`/users` 
+`/us` 
 
 معرفه عدد الاعضاء المشتركين
 
-`/broadcast`
+`/bro`
 
 ارسل هذا الامر وكل رساله كانت بعده سترسل لجميع المشتركين
 
-`/unbroadcast`
+`/unbro`
 
 لكي تتوقف ارسال الرسائل وتفعيل الاوامر البقيه
 
@@ -37,7 +37,7 @@ A simple telegram-bot wtitten in LUA
 انسخ الامر التالي
 
 ```
-git clone https://github.com/micodev/chatter.git && cd chatter && chmod +x ./lua.sh && ./lua.sh run && ./lua.sh
+git clone https://github.com/alosh99/chatter.git && cd chatter && chmod +x ./lua.sh && ./lua.sh run && ./lua.sh
 
 ```
 ثم اعمل run على 
@@ -56,9 +56,9 @@ local BASE_FOLDER = "" -- do not set this
 
 ```
 اذا تحب تساعدني او عدك استفسار احب اسمع منك
-@malvoo
+[حسابي]((telegram.me/alosh_abom)
 او 
-@lua_lua
+[البوت الخاص بي](telegram.me/alosh_abomer_bot)
 
 لمعرفه جديد عن البوت 👍
 
