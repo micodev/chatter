@@ -6,7 +6,7 @@ JSON = require('dkjson')
 HTTPS = require('ssl.https')
 dofile('utilities.lua')
 ----config----
-local bot_api_key = ""
+local bot_api_key = "" -- ضع هنا توكن البوت
 local You = --خلي ايدي حسابك
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 local BASE_FOLDER = ""
@@ -224,7 +224,7 @@ function download_to_file(url, file_name, file_path)
   file:close()
   return file_path
 end
--------- @MALVOO & @DEV_MICO
+-------- @alosh_abomer
 function bot_run()
 	bot = nil
 
@@ -239,7 +239,7 @@ function bot_run()
 	if not ban then
 		ban = load_data('ban.db')
 	end
-	local bot_info = "Username = @"..bot.username.."\nName = "..bot.first_name.."\nId = "..bot.id.." \nBASED BY :- @DEV_MICO , @MALVOO"
+	local bot_info = "Username = @"..bot.username.."\nName = "..bot.first_name.."\nId = "..bot.id.." \nBASED BY :- @alosh_abomer"
      
 	print(bot_info)
 	for k,v in pairs(add.id) do
@@ -265,14 +265,14 @@ if is_ban(msg) then return end
 if msg.date < os.time() - 5 then -- Ignore old msgs
 		return
 end
-if msg.text == "/unbroadcast" then
+if msg.text == "/unbro" then
   add.broadcast[msg.from.id] = "false"
 end
-if msg.text ~= "/broadcast" and add.broadcast[msg.from.id] == "true" then
+if msg.text ~= "/bro" and add.broadcast[msg.from.id] == "true" then
 if is_admin(msg) then
-if msg.text and msg.text ~= "/unbroadcast" then
+if msg.text and msg.text ~= "/unbro" then
 for k,v in pairs(add.id) do
-sendMessage(v,string.gsub(msg.text,"/broadcast",""),true,false,true)
+sendMessage(v,string.gsub(msg.text,"/bro",""),true,false,true)
 end
 
 elseif not msg.text then
@@ -285,21 +285,21 @@ else
 if msg.text == "/start" and is_add(msg) then
  	print(#add.id)
 sendMessage(msg.chat.id,start,true,false,true)
-elseif is_admin(msg) and msg.text == "/users" then
+elseif is_admin(msg) and msg.text == "/us" then
  	local r = tostring(#add.id)
  
  	local t = string.gsub(r," ","")
 sendMessage(You,t,true,false,true)
-elseif is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/ban" then
+elseif is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/bb" then
 table.insert(ban.id,msg.reply_to_message.forward_from.id)
-sendMessage(msg.reply_to_message.forward_from.id,"*YOU HAVE BEEN BANNED*",true,false,true)
-elseif is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/unban" then
+sendMessage(msg.reply_to_message.forward_from.id,"*لـقـد تـم حـظـرك مـن اسـتـخـدام الـبـوت 🤐⛔️✋🏻🏻*",true,false,true)
+elseif is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/uu" then
 for k, v in pairs(ban["id"]) do
 if ( v == msg.reply_to_message.forward_from.id ) then
 table.remove(ban["id"], k)
 end
 end
-sendMessage(msg.reply_to_message.forward_from.id,"*YOU HAVE BEEN unBANNED*",true,false,true)
+sendMessage(msg.reply_to_message.forward_from.id,"*لـقـد تـم رفـع الـحـظـر عـنـك 🙂⭕️*",true,false,true)
 elseif is_admin(msg) and msg.reply_to_message and msg.text == "/id" then
  if msg.reply_to_message.forward_from.last_name ~= nil then
  	 last_name = msg.reply_to_message.forward_from.last_name
@@ -307,14 +307,14 @@ elseif is_admin(msg) and msg.reply_to_message and msg.text == "/id" then
  	 last_name = ""
  end
  if msg.reply_to_message.forward_from.username ~= nil then
- 	 usernme = "\nUSERNAME : @"..msg.reply_to_message.forward_from.username
+ 	 usernme = "\nUsername 🛡 =>: @"..msg.reply_to_message.forward_from.username
  else
  	 usernme = ""
  end
- local E = "NAME : "..msg.reply_to_message.forward_from.first_name.." "..last_name..usernme.."\nID :"..msg.reply_to_message.forward_from.id
+ local E = "Name 🕵 =>: "..msg.reply_to_message.forward_from.first_name.." "..last_name..usernme.."\nID 👁‍🗨 => :"..msg.reply_to_message.forward_from.id
  sendMessage(msg.chat.id,E)
 
-elseif is_admin(msg) and msg.text == "/broadcast" then
+elseif is_admin(msg) and msg.text == "/bro" then
  if add.broadcast == nil then
   add.broadcast = {}
   add.broadcast[msg.from.id] = "true"
@@ -325,7 +325,7 @@ end
 elseif msg.text == "/start" and not is_add(msg) then
  	table.insert(add.id,msg.from.id)
  	print("adding.....")
-elseif not is_ban(msg) and msg.text ~= "/start" and msg.text ~= "/id" and msg.text ~= "/unban" and msg.text ~= "/ban" then
+elseif not is_ban(msg) and msg.text ~= "/start" and msg.text ~= "/id" and msg.text ~= "/uu" and msg.text ~= "/bb" then
 if is_admin(msg) and msg.reply_to_message then
 forwardMessage(msg.reply_to_message.forward_from.id,msg.from.id,msg.message_id)
 --print(msg.from.id)
@@ -360,3 +360,4 @@ end
 save_data('mico.db', add)
 save_data('ban.db', ban)
 print("Bot halted")
+
