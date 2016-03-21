@@ -40,6 +40,10 @@ A simple telegram-bot wtitten in LUA
 git clone https://github.com/micodev/chatter.git && cd chatter && chmod +x ./lua.sh && ./lua.sh run && ./lua.sh
 
 ```
+ثم اعمل run على 
+```
+./launch.sh
+```
 خلي التوكين للبوت بين "" في bot_api_bot
 وايدي حسابك الخاصه ب you
 
