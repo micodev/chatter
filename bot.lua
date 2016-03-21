@@ -6,7 +6,7 @@ JSON = require('dkjson')
 HTTPS = require('ssl.https')
 dofile('utilities.lua')
 ----config----
-local bot_api_key = "" -- ضع هنا توكن البوت
+local bot_api_key = "" -- خلي توكن البوت هنا
 local You = --خلي ايدي حسابك
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 local BASE_FOLDER = ""
@@ -361,3 +361,4 @@ save_data('mico.db', add)
 save_data('ban.db', ban)
 print("Bot halted")
 
+--by @alosh_abomer
