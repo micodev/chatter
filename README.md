@@ -56,7 +56,7 @@ local BASE_FOLDER = "" -- do not set this
 
 ```
 اذا تحب تساعدني او عدك استفسار احب اسمع منك
-[حسابي]((telegram.me/alosh_abom)
+[حسابي](telegram.me/alosh_abomer)
 او 
 [البوت الخاص بي](telegram.me/alosh_abomer_bot)
 
