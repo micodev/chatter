@@ -10,7 +10,26 @@ local bot_api_key = ""
 local You = --خلي ايدي حسابك
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 local BASE_FOLDER = ""
-local start = [[]] -- خلي بنص [[]] رساله ترحيب
+local start = [[]] -- خلي بنص [[]] رساله ترحيب--
+local help = [[
+➖➖➖➖➖➖➖➖➖➖➖
+*commands:*`for admin`
+`/ban` ✴️
+*حظر عضو من ارسال رساله بالرد على رسالته*
+`/unban` ✴️
+*فتح الحظر عن عضو عن طريق الرد على رسالته*
+`/users` ✴️
+*معرفه عدد الاعضاء المشتركين*
+`/broadcast` ✴️
+*ارسل هذا الامر وكل رساله كانت بعده سترسل لجميع المشتركين*
+`/unbroadcast` ✴️
+*لكي تتوقف ارسال الرسائل وتفعيل الاوامر البقيه*
+`/start` ✴️
+*لأظهار رساله ترحيب للاعضاٱء*
+`/id` ✴️
+*بالرد على رساله موجهه يضهر لك المعلومات*
+➖➖➖➖➖➖➖➖➖➖➖
+]] --يرجة عدم التلاعب بل لوكال--
 -------
 
 ----utilites----
@@ -259,8 +278,13 @@ function bot_run()
 	is_started = true -- and whether or not the bot should be running.
   add.id = add.id or {} --TABLE FUCKERRRRRRRRRRRRRRRRRRRRRRRRRRR
   ban.id = ban.id or {}
+  add.broadcast = add.broadcast or {}
 end
 function msg_processor(msg)
+--help--
+if msg.text == '/help' then
+sendMessage(msg.chat.id,help,true,false,true)
+end
 if is_ban(msg) then return end
 if msg.date < os.time() - 5 then -- Ignore old msgs
 		return
