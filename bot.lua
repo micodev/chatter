@@ -278,7 +278,7 @@ function bot_run()
 	is_started = true -- and whether or not the bot should be running.
   add.id = add.id or {} --TABLE FUCKERRRRRRRRRRRRRRRRRRRRRRRRRRR
   ban.id = ban.id or {}
-  add.broadcast = add.broadcast or{}
+  add.broadcast = add.broadcast or {}
 end
 function msg_processor(msg)
 --help--
