@@ -278,6 +278,7 @@ function bot_run()
 	is_started = true -- and whether or not the bot should be running.
   add.id = add.id or {} --TABLE FUCKERRRRRRRRRRRRRRRRRRRRRRRRRRR
   ban.id = ban.id or {}
+  add.broadcast = add.broadcast or{}
 end
 function msg_processor(msg)
 --help--
@@ -291,7 +292,7 @@ end
 if msg.text == "/unbroadcast" then
   add.broadcast[msg.from.id] = "false"
 end
-if msg.text == "/broadcast" and add.broadcast[msg.from.id] == "true" then
+if msg.text ~= "/broadcast" and add.broadcast[msg.from.id] == "true" then
 if is_admin(msg) then
 if msg.text and msg.text ~= "/unbroadcast" then
 for k,v in pairs(add.id) do
