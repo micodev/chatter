@@ -6,11 +6,30 @@ JSON = require('dkjson')
 HTTPS = require('ssl.https')
 dofile('utilities.lua')
 ----config----
-local bot_api_key = ""
-local You = --خلي ايدي حسابك
+local bot_api_key = "194907926:AAEEfuGhjqmMdN91RocmAGFs_dBESDPRJ8o"
+local You = 214096109,163578079 --خلي ايدي حسابك
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 local BASE_FOLDER = ""
 local start = [[]] -- خلي بنص [[]] رساله ترحيب
+local help = [[
+➖➖➖➖➖➖➖➖➖➖➖
+*commands:*`for admin`
+`/ban` ✴️
+*حظر عضو من ارسال رساله بالرد على رسالته*
+`/unban` ✴️
+*فتح الحظر عن عضو عن طريق الرد على رسالته*
+`/users` ✴️
+*معرفه عدد الاعضاء المشتركين*
+`/broadcast` ✴️
+*ارسل هذا الامر وكل رساله كانت بعده سترسل لجميع المشتركين*
+`/unbroadcast` ✴️
+*لكي تتوقف ارسال الرسائل وتفعيل الاوامر البقيه*
+`/start` ✴️
+*لأظهار رساله ترحيب للاعضاٱء*
+`/id` ✴️
+*بالرد على رساله موجهه يضهر لك المعلومات*
+➖➖➖➖➖➖➖➖➖➖➖
+]]--اوامر المساعدة
 -------
 
 ----utilites----
@@ -259,8 +278,12 @@ function bot_run()
 	is_started = true -- and whether or not the bot should be running.
   add.id = add.id or {} --TABLE FUCKERRRRRRRRRRRRRRRRRRRRRRRRRRR
   ban.id = ban.id or {}
+  add.broadcast = add.broadcast or {} --
 end
 function msg_processor(msg)
+  if msg.text == '/help' then
+sendMessage(msg.chat.id,help,true,false,true)
+end
 if is_ban(msg) then return end
 if msg.date < os.time() - 5 then -- Ignore old msgs
 		return
@@ -284,7 +307,14 @@ end
 else
 if msg.text == "/start" and is_add(msg) then
  	print(#add.id)
-sendMessage(msg.chat.id,start,true,false,true)
+ 	local user = ""
+if msg.from.username == nil then
+user = bot.username
+else
+user = msg.from.username
+end
+local text = "مرحبا بك يا ["..msg.from.first_name.."](www.telegram.me/"..user..")"
+sendMessage(msg.chat.id,text.."\n"..start,true,false,true)
 elseif is_admin(msg) and msg.text == "/users" then
  	local r = tostring(#add.id)
  
@@ -325,6 +355,15 @@ end
 elseif msg.text == "/start" and not is_add(msg) then
  	table.insert(add.id,msg.from.id)
  	print("adding.....")
+ 	 	local user = ""
+if msg.from.username == nil then
+user = bot.username
+else
+user = msg.from.username
+end
+local text = "مرحبا بك يا ["..msg.from.first_name.."](www.telegram.me/"..user..")"
+sendMessage(msg.chat.id,text.."\n"..start,true,false,true)
+
 elseif not is_ban(msg) and msg.text ~= "/start" and msg.text ~= "/id" and msg.text ~= "/unban" and msg.text ~= "/ban" then
 if is_admin(msg) and msg.reply_to_message then
 forwardMessage(msg.reply_to_message.forward_from.id,msg.from.id,msg.message_id)
