@@ -290,6 +290,7 @@ if msg.date < os.time() - 5 then -- Ignore old msgs
 end
 if msg.text == "/unbroadcast" then
   add.broadcast[msg.from.id] = "false"
+  save_data('mico.db', add)
 end
 if msg.text ~= "/broadcast" and add.broadcast[msg.from.id] == "true" then
 if is_admin(msg) then
@@ -346,7 +347,7 @@ elseif is_admin(msg) and msg.reply_to_message and msg.text == "/id" then
 
 elseif is_admin(msg) and msg.text == "/broadcast" then
  if add.broadcast == nil then
-  add.broadcast = {}
+  --add.broadcast = {}
   add.broadcast[msg.from.id] = "true"
   else
  add.broadcast[msg.from.id] = "true"
