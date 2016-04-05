@@ -6,24 +6,11 @@ JSON = require('dkjson')
 HTTPS = require('ssl.https')
 dofile('utilities.lua')
 ----config----
-local bot_api_key = "209834280:AAEy9TEZfXSt9xrq3JNLn8jCJcfQxpS_cwY" --التوكم هنا
-local You = 197659452 --خلي ايدي حسابك
+local bot_api_key = "" --التوكم هنا
+local You =  --خلي ايدي حسابك
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 local BASE_FOLDER = ""
-local start = [[ [مرحبا بك في بوت التواصل👀]
-
-
-               *{\TE_(SPΛCE)_CH/}*
-               [
-يمكنك طرح اي فكره او استفسار 💋
-
-
-او ماذا تريد ان اشرح لك خلال رساله
-
-
-المطور :- @MALVOO
-القناه :- @lua_lua ]
-]]
+local start = [[ ]]
 
 -------
 
