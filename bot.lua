@@ -6,7 +6,7 @@ JSON = require('dkjson')
 HTTPS = require('ssl.https')
 dofile('utilities.lua')
 ----config----
-local bot_api_key = "" --التوكم هنا 
+local bot_api_key = "" --التوكم هنا
 local You =  --خلي ايدي حسابك
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 local BASE_FOLDER = ""
@@ -36,7 +36,7 @@ local help = [[
 
 function is_admin(msg)-- Check if user is admin or not
   local var = false
-  local admins = {You} 
+  local admins = {You}
   for k,v in pairs(admins) do
     if msg.from.id == v then
       var = true
@@ -219,7 +219,7 @@ end
 end
 function download_to_file(url, file_name, file_path)
   print("url to download: "..url)
-  
+
   local respbody = {}
   local options = {
     url = url,
@@ -237,7 +237,7 @@ function download_to_file(url, file_name, file_path)
   local file_path = file_name
 
   print("Saved to: "..file_path)
-  
+
   file = io.open(file_path, "w+")
   file:write(table.concat(respbody))
   file:close()
@@ -259,16 +259,16 @@ function bot_run()
 		ban = load_data('ban.db')
 	end
 	local bot_info = "Username = @"..bot.username.."\nName = "..bot.first_name.."\nId = "..bot.id.." \nBASED BY :- @DEV_MICO , @MALVOO"
-     
+
 	print(bot_info)
 	for k,v in pairs(add.id) do
   print(k.." :"..v)
   end
 
 	last_update = last_update or 0
- 
+
  currect_folder = ""
- 
+
  is_running = true
 	math.randomseed(os.time())
 	math.random()
@@ -318,7 +318,7 @@ local text = "مرحبا بك يا ["..msg.from.first_name.."](www.telegram.me/"
 sendMessage(msg.chat.id,text.."\n"..start,true,false,true)
 elseif is_admin(msg) and msg.text == "/users" then
  	local r = tostring(#add.id)
- 
+
  	local t = string.gsub(r," ","")
 sendMessage(You,t,true,false,true)
 elseif is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/ban" then
@@ -346,12 +346,10 @@ elseif is_admin(msg) and msg.reply_to_message and msg.text == "/id" then
  sendMessage(msg.chat.id,E)
 
 elseif is_admin(msg) and msg.text == "/broadcast" then
- if add.broadcast == nil then
-  --add.broadcast = {}
+
   add.broadcast[msg.from.id] = "true"
-  else
- add.broadcast[msg.from.id] = "true"
-end
+
+save_data('mico.db', add)
 
 elseif msg.text == "/start" and not is_add(msg) then
  	table.insert(add.id,msg.from.id)
