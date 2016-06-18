@@ -49,7 +49,11 @@ local bot_api_key = "" -- token
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
 you = --ايدي هنا فقط رقم
 local BASE_FOLDER = "" -- do not set this
+```
 
+```
+open chatter.lua in plugins folder
+You =  --your id
 ```
 اذا تحب تساعدني او عدك استفسار احب اسمع منك
 @malvoo

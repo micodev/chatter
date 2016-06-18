@@ -5,39 +5,25 @@ URL = require('socket.url')
 JSON = require('dkjson')
 HTTPS = require('ssl.https')
 dofile('utilities.lua')
+You = 171114902
 ----config----
-local bot_api_key = "" --التوكم هنا
-local You =  --خلي ايدي حسابك
+local bot_api_key = "203034641:AAHy5IDaY6JWXEAb-vS1-3QSPU3Nino3gvc" --التوكم هنا
 local BASE_URL = "https://api.telegram.org/bot"..bot_api_key
-local BASE_FOLDER = ""
-local start = [[ ]]
-
--------
-
-----utilites----
-local help = [[
-➖➖➖➖➖➖➖➖➖➖➖
-*commands:*`for admin`
-`/ban` ✴️
-*حظر عضو من ارسال رساله بالرد على رسالته*
-`/unban` ✴️
-*فتح الحظر عن عضو عن طريق الرد على رسالته*
-`/users` ✴️
-*معرفه عدد الاعضاء المشتركين*
-`/broadcast` ✴️
-*ارسل هذا الامر وكل رساله كانت بعده سترسل لجميع المشتركين*
-`/unbroadcast` ✴️
-*لكي تتوقف ارسال الرسائل وتفعيل الاوامر البقيه*
-`/start` ✴️
-*لأظهار رساله ترحيب للاعضاٱء*
-`/id` ✴️
-*بالرد على رساله موجهه يضهر لك المعلومات*
-➖➖➖➖➖➖➖➖➖➖➖
-]]--اوامر المساعدة
--------
-
-----utilites----
-
+local function match_pattern(pattern, msg)
+if msg.reply_to_message then
+  text = "#@reply@#"
+elseif msg.text then
+  text = msg.text
+end
+  	if text then
+  		text = text:gsub('@'..bot.username, '')
+    	local matches = {}
+    	matches = { string.match(text, pattern) }
+    	if next(matches) then
+    		return matches
+		end
+  	end
+end
 function is_admin(msg)-- Check if user is admin or not
   local var = false
   local admins = {You}
@@ -100,6 +86,33 @@ function getUpdates(offset)
   return sendRequest(url)
 
 end
+function handle_inline_keyboards(msg)
+
+	msg.text = '#in:'..msg.data
+	t = {}
+	t["id"] = 0
+	if msg.message then
+	msg.old_text =  msg.message.text
+	msg.old_date =  msg.message.date
+	msg.message_id = msg.message.message_id
+	--msg.chat.type = "inline_keyboard"
+	msg.chat = msg.message.chat
+	else
+	msg.old_text =  "test"
+	msg.old_date =  9
+	msg.message_id = 9
+	msg.chat = t
+	end
+	if msg.inline_message_id then
+	msg.inline = msg.inline_message_id
+	end
+	msg.date = os.time()
+	msg.cb = true
+	msg.cb_id = msg.id
+	msg.message = nil
+	return msg_processor(msg)
+
+end
 function sendSticker(chat_id, sticker, reply_to_message_id)
 
 	local url = BASE_URL .. '/sendSticker'
@@ -135,7 +148,7 @@ function forwardMessage(chat_id, from_chat_id, message_id)
 	return sendRequest(url)
 
 end
-function sendMessage(chat_id, text, disable_web_page_preview, reply_to_message_id, use_markdown)
+function sendMessage(chat_id, text, disable_web_page_preview, reply_to_message_id, use_markdown,reply_markup)
 
 	local url = BASE_URL .. '/sendMessage?chat_id=' .. chat_id .. '&text=' .. URL.escape(text)
 
@@ -150,6 +163,9 @@ function sendMessage(chat_id, text, disable_web_page_preview, reply_to_message_i
 	if use_markdown then
 		url = url .. '&parse_mode=Markdown'
 	end
+	if reply_markup then
+	    url = url .."&reply_markup="..reply_markup
+	end
 
 	return sendRequest(url)
 
@@ -158,7 +174,7 @@ function sendDocument(chat_id, document, reply_to_message_id)
 
 	local url = BASE_URL .. '/sendDocument'
 
-	local curl_command = 'cd \''..BASE_FOLDER..currect_folder..'\' && curl -s "' .. url .. '" -F "chat_id=' .. chat_id .. '" -F "document=@' .. document .. '"'
+	local curl_command = ' curl -s "' .. url .. '" -F "chat_id=' .. chat_id .. '" -F "document=@' .. document .. '"'
 
 	if reply_to_message_id then
 		curl_command = curl_command .. ' -F "reply_to_message_id=' .. reply_to_message_id .. '"'
@@ -192,6 +208,23 @@ function download_to_file(url, file_name, file_path)
   file:write(table.concat(respbody))
   file:close()
   return file_path
+end
+function editMessageText(chat_id, message_id, text, keyboard, markdown)
+
+	local url = BASE_URL .. '/editMessageText?chat_id=' .. chat_id .. '&message_id='..message_id..'&text=' .. URL.escape(text)
+
+	if markdown then
+		url = url .. '&parse_mode=Markdown'
+	end
+
+	url = url .. '&disable_web_page_preview=true'
+
+	if keyboard then
+		url = url..'&reply_markup='..keyboard
+	end
+
+	return sendRequest(url)
+
 end
 function sendPhotoID(chat_id, file_id, caption, reply_to_message_id, disable_notification)
 
@@ -276,112 +309,39 @@ function bot_run()
  is_running = true
 	math.randomseed(os.time())
 	math.random()
-
+config = {}
+config.plugins = {"chatter.lua"}
+plugins = {} -- Load plugins.
+	print('Loading plugins...')
+	for i,v in ipairs(config.plugins) do
+		local p = dofile('plugins/'..v)
+		table.insert(plugins, p)
+	end
 
 	last_cron = last_cron or os.date('%M', os.time()) -- the time of the last cron job,
 	is_started = true -- and whether or not the bot should be running.
-  add.id = add.id or {} --TABLE FUCKERRRRRRRRRRRRRRRRRRRRRRRRRRR
+  add.id = add.id or {}
   ban.id = ban.id or {}
-  add.broadcast = add.broadcast or {} --
+  add.broadcast = add.broadcast or {}
 end
 function msg_processor(msg)
 
-if msg.text == "/start" and not is_add(msg) then
- 	table.insert(add.id,msg.from.id)
- 	print("adding.....")
- 	 	local user = ""
-if msg.from.username == nil then
-user = bot.username
-else
-user = msg.from.username
-end
-local text = "مرحبا بك يا ["..msg.from.first_name.."](www.telegram.me/"..user..")"
-sendMessage(msg.chat.id,text.."\n"..start,true,false,true)
-elseif msg.text == "/start" and is_add(msg) then
- 	print(#add.id)
- 	local user = ""
-if msg.from.username == nil then
-user = bot.username
-else
-user = msg.from.username
-end
-local text = "مرحبا بك يا ["..msg.from.first_name.."](www.telegram.me/"..user..")"
-sendMessage(msg.chat.id,text.."\n"..start,true,false,true)
-elseif is_admin(msg) and msg.text == "/users" then
- 	local r = tostring(#add.id)
-
- 	local t = string.gsub(r," ","")
-sendMessage(You,t,true,false,true)
-end
-if msg.text == '/help' then
-sendMessage(msg.chat.id,help,true,false,true)
-end
-if is_ban(msg) then return end
-if msg.date < os.time() - 5 then -- Ignore old msgs
-		return
-end
-if msg.text == "/unbroadcast" then
-  add.broadcast = "broadcast"
-  save_data('mico.db', add)
-  sendMessage(msg.chat.id,"*I will not broadcast any more*",true,false,true)
-end
-if msg.text ~= "/broadcast" and  add.broadcast ~= "broadcast" then
-if is_admin(msg) then
-if msg.text and msg.text ~= "/unbroadcast" then
-for k,v in pairs(add.id) do
-sendMessage(v,msg.text,true,false,true)
-end
-
-elseif not msg.text then
-for k,v in pairs(add.id) do
-forwardMessage(v,You,msg.message_id)
-end
-end
-end
-elseif msg.text ~= "/" then
-if is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/ban" then
-table.insert(ban.id,msg.reply_to_message.forward_from.id)
-sendMessage(msg.reply_to_message.forward_from.id,"*YOU HAVE BEEN BANNED*",true,false,true)
-elseif is_admin(msg) and msg.reply_to_message and msg.reply_to_message.forward_from ~= nil and msg.text == "/unban" then
-for k, v in pairs(ban["id"]) do
-if ( v == msg.reply_to_message.forward_from.id ) then
-table.remove(ban["id"], k)
-end
-end
-sendMessage(msg.reply_to_message.forward_from.id,"*YOU HAVE BEEN unBANNED*",true,false,true)
-elseif is_admin(msg) and msg.reply_to_message and msg.text == "/id" then
- if msg.reply_to_message.forward_from.last_name ~= nil then
- 	 last_name = msg.reply_to_message.forward_from.last_name
- else
- 	 last_name = ""
- end
- if msg.reply_to_message.forward_from.username ~= nil then
- 	 usernme = "\nUSERNAME : @"..msg.reply_to_message.forward_from.username
- else
- 	 usernme = ""
- end
- local E = "NAME : "..msg.reply_to_message.forward_from.first_name.." "..last_name..usernme.."\nID :"..msg.reply_to_message.forward_from.id
- sendMessage(msg.chat.id,E)
-
-elseif is_admin(msg) and msg.text == "/broadcast" then
-
-  add.broadcast = "unbroadcast"
-    sendMessage(msg.chat.id,"*I will send every thing u want*",true,false,true)
-save_data('mico.db', add)
-
-
-elseif not is_ban(msg) and msg.text ~= "/start" and msg.text ~= "/id" and msg.text ~= "/unban" and msg.text ~= "/ban" then
-if is_admin(msg) and msg.reply_to_message then
-forwardMessage(msg.reply_to_message.forward_from.id,msg.from.id,msg.message_id)
---print(msg.from.id)
-print(msg.reply_to_message.from.id)
-print(msg.reply_to_message.forward_from.id)
---print(msg.reply_to_message.from.id)
-print(msg.reply_to_message.message_id)
-elseif not is_admin(msg) then
+if not is_admin(msg) then
 forwardMessage(You,msg.chat.id,msg.message_id)
 end
-end
+     for k, v in ipairs(plugins) do
+ for i, pattern in pairs(v.patterns) do
+    local matches = match_pattern(pattern, msg)
+    if matches then
+      pat  = pattern
+      	local success, result = pcall(function()
+					return v.chatter(msg,matches)
+				end)
+				if not success then print("fucked up") return end
+
+
+    end
+    end
 end
 end
 bot_run() -- Run main function
@@ -390,7 +350,11 @@ while is_running do -- Start a loop witch receive messages.
 	if response then
 		for i,v in ipairs(response.result) do
 			last_update = v.update_id
+			if v.message then
 			msg_processor(v.message)
+		    elseif v.callback_query then
+		       handle_inline_keyboards(v.callback_query)
+			   end
 		end
 	else
 		print("Conection failed")
