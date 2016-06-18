@@ -56,9 +56,9 @@ open chatter.lua in plugins folder
 You =  --your id
 ```
 اذا تحب تساعدني او عدك استفسار احب اسمع منك
-@malvoo
-او 
-@lua_lua
+for more information 
+
+[Mico](telegram.me/lua_lang)
 
 لمعرفه جديد عن البوت 👍
 
